@@ -1,0 +1,22 @@
+{
+  "name": "mealsdb-application",
+  "version": "1.0.0",
+  "description": "an application to interact with meal recipe api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ashley Manese",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mealdb-api": "file:../mealdb-api",
+    "mongodb": "^5.1.0",
+    "mongoose": "^6.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}

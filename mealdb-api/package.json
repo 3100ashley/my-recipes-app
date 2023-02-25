@@ -1,0 +1,14 @@
+{
+  "name": "mealdb-api",
+  "version": "1.0.0",
+  "description": "a module to interact with mealsDB API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "superagent": "^8.0.9"
+  }
+}
