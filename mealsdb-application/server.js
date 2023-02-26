@@ -6,17 +6,15 @@
 * delete saved recipe
 
 * view created recipes
-create recipe 
-edit recipe 
+* view single created recipe
+* create recipe 
+* edit recipe 
 * delete recipe 
-
-
 */
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const mealsApi = require("mealdb-api");
-const MongoClient = require("mongodb").MongoClient;
 const MyRecipe = require("./models/my-recipe");
 const SavedRecipe = require("./models/saved-recipe");
 
@@ -172,6 +170,40 @@ app.get("/my-meals", async (req, res) => {
   }
 });
 
+app.get("/my-meals/:id", async (req, res) => {
+  const mealID = req.params.id
+  try {
+    const meal = await MyRecipe.findById(mealID)
+    if(!meal){
+      res.status(404).json({error: "meal not found"})
+    }else{
+      res.json({ recipe: meal });
+    }
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.post("/my-meals", async(req,res) => {
+  const meal = new MyRecipe(req.body)
+  try{
+    await meal.save();
+    res.status(201).json({meal})
+  }catch(e){
+    res.status(400).json({error:e.message})
+  }
+})
+
+app.patch("/my-meals/:id", async(req,res) => {
+  try {
+    const mealID = req.params.id;
+    const meal = await MyRecipe.findOneAndUpdate({_id: mealID}, req.body, {new: true});
+    res.json({meal});
+  }catch(e){
+    res.status(500).json({error : e.message})
+  }
+})
+
 app.delete("/my-meals/:id", async (req, res) => {
   try {
     const mealId = req.params.id;
@@ -181,13 +213,11 @@ app.delete("/my-meals/:id", async (req, res) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 });
-// Create a new MongoClient
-const client = new MongoClient(CONNECTION);
 
 const start = async () => {
   try {
     await mongoose.connect(CONNECTION);
-    app.locals.db = client.db();
+   
     app.listen(PORT, () => {
       console.log("App listening on port " + PORT);
     });
